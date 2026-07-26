@@ -62,7 +62,7 @@ export function useScoreParser(arquivoXml) {
             const ending = barline.getElementsByTagName("ending")[0];
             if (ending) {
               endingNum = parseInt(ending.getAttribute("number"), 10) || 1;
-              endingType = ending.getAttribute("type"); // 'start', 'stop', 'discontinue'
+              endingType = ending.getAttribute("type");
             }
           }
 
@@ -157,6 +157,7 @@ export function useScoreParser(arquivoXml) {
           compassosEstruturados.push({
             numero: numCompasso,
             beatsPorCompasso: maxDuracaoCompasso,
+            timeSignature: `${beatsPorCompasso}/${beatType}`,
             notas: notasDoCompasso,
             repeatStart,
             repeatEnd,
@@ -165,44 +166,33 @@ export function useScoreParser(arquivoXml) {
           });
         }
 
-        // --- MOTOR DE EXPANSAO DE REPETICOES E CASAS (1ª E 2ª VEZ) ---
-        // Expande o array linear de compassos para incluir a ordem real de execução das repetições
         const compassosExpandidos = [];
         let i = 0;
         let repeatTargetIndex = 0;
-        let passCount = 1; // 1 = primeira vez, 2 = segunda vez
+        let passCount = 1;
 
         while (i < compassosEstruturados.length) {
           const comp = compassosEstruturados[i];
-
-          // Se encontrar início de ritornelo, marca o ponto de retorno
           if (comp.repeatStart) {
             repeatTargetIndex = i;
           }
-
-          // Se estiver na 2ª vez e o compasso pertencer à 1ª casa (endingNum === 1), pula ele
           if (passCount === 2 && comp.endingNum === 1) {
             i++;
             continue;
           }
-
           compassosExpandidos.push({
             ...comp,
-            // ID único para garantir que o player saiba distinguir passadas se necessário
             passIndex: passCount 
           });
-
-          // Se encontrar fim de ritornelo
           if (comp.repeatEnd) {
             if (passCount === 1) {
               passCount = 2;
-              i = repeatTargetIndex; // Volta para o início do ritornelo
+              i = repeatTargetIndex;
               continue;
             } else {
-              passCount = 1; // Reseta para futuras repetições
+              passCount = 1;
             }
           }
-
           i++;
         }
 

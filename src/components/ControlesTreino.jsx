@@ -9,7 +9,8 @@ export default function ControlesTreino({
   setInstrumento,
   compassoAtual,
   setCompassoAtual,
-  totalCompassos = 27,
+  totalCompassos,
+  beatsPorCompasso = 4,
   usarCountIn,
   setUsarCountIn,
   usarLooper,
@@ -28,10 +29,8 @@ export default function ControlesTreino({
   currentBeat,
   faseCountIn
 }) {
-  const beatsPorCompasso = 4;
   const [bpmInputText, setBpmInputText] = useState(bpm.toString());
 
-  // Sincroniza se o BPM mudar externamente
   useEffect(() => {
     setBpmInputText(bpm.toString());
   }, [bpm]);
@@ -42,7 +41,6 @@ export default function ControlesTreino({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Atalho de Teclado (Espaço)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
@@ -62,7 +60,6 @@ export default function ControlesTreino({
     >
       <div className="d-flex flex-wrap justify-content-between align-items-center gap-2">
         
-        {/* Play Principal + Timbre */}
         <div className="d-flex align-items-center gap-2">
           <button
             className={`btn ${isPlaying ? 'btn-danger' : 'btn-success'} fw-bold px-3 py-1 shadow-sm`}
@@ -84,7 +81,6 @@ export default function ControlesTreino({
           </select>
         </div>
 
-        {/* Indicador Visual de Beats & Compasso Atual Editável */}
         <div className="d-flex align-items-center gap-2 bg-light px-2 py-1 rounded border">
           <span className="small text-muted fw-bold" style={{ fontSize: '10px' }}>
             {faseCountIn ? 'CONTAGEM' : 'COMP.'}
@@ -95,8 +91,8 @@ export default function ControlesTreino({
             style={{ width: '40px', height: '24px', fontSize: '12px' }}
             value={compassoAtual}
             min="1"
-            max={totalCompassos}
-            onChange={(e) => setCompassoAtual(Math.max(1, Math.min(totalCompassos, parseInt(e.target.value) || 1)))}
+            max={totalCompassos || 1}
+            onChange={(e) => setCompassoAtual(Math.max(1, Math.min(totalCompassos || 1, parseInt(e.target.value) || 1)))}
             title="Digite o compasso inicial de reprodução"
           />
           <div className="d-flex gap-1 ms-1">
@@ -122,7 +118,6 @@ export default function ControlesTreino({
           </div>
         </div>
 
-        {/* Controles de BPM, Looper, Timer e Count-in */}
         <div className="d-flex align-items-center gap-2 flex-wrap">
           <div className="d-flex align-items-center gap-1">
             <span className="small text-muted fw-bold">BPM:</span>
@@ -153,7 +148,6 @@ export default function ControlesTreino({
             />
           </div>
 
-          {/* Looper & Timer */}
           <div className="d-flex align-items-center gap-1 bg-light px-2 py-1 rounded border">
             <div className="form-check form-switch m-0" title="Ativar/Desativar Looper">
               <input
@@ -183,11 +177,10 @@ export default function ControlesTreino({
                   style={{ width: '35px', height: '24px', fontSize: '12px' }}
                   value={compassoFinal}
                   min={compassoInicial}
-                  max={totalCompassos}
+                  max={totalCompassos || 1}
                   onChange={(e) => setCompassoFinal(Number(e.target.value))}
                 />
 
-                {/* Timer integrado ao Looper */}
                 <div className="form-check form-switch m-0 ms-2" title="Ativar/Desativar Timer">
                   <input
                     className="form-check-input"
@@ -221,7 +214,6 @@ export default function ControlesTreino({
             )}
           </div>
 
-          {/* Count-in Switch */}
           <div className="d-flex align-items-center gap-1 border-start ps-2">
             <div className="form-check form-switch m-0" title="Count-in (Contagem inicial)">
               <input
