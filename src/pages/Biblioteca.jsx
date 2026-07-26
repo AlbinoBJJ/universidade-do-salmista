@@ -18,7 +18,7 @@ const listaLicoes = [
     title: 'Lição 1: Pelos Prados', 
     resumo: 'Partitura da música Pelos Prados e Campinas adaptada em C maior para o Salmo 22(23).',
     temPartitura: true,
-    arquivoXml: '/assets/musicxml/pelos_prados.musicxml',
+    arquivoXml: `${import.meta.env.BASE_URL}assets/musicxml/pelos_prados.musicxml`,
     letraCompleta: [
       {
         estrofe: "1",
