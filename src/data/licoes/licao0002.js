@@ -3,6 +3,7 @@ export default {
   title: 'Lição 2: Confesso a Deus',
   resumo: 'Estudo do Ato Penitencial "Confesso a Deus", adaptado para acompanhamento e leitura rítmica.',
   temPartitura: true,
+  citacao: '"Senhor, tende piedade de nós. Cristo, tende piedade de nós. Senhor, tende piedade de nós."',
   arquivoXml: `${import.meta.env.BASE_URL}assets/musicxml/confesso_a_deus.musicxml`,
   abas: [
     { id: 'partitura', label: 'Partitura & Tocar', tipo: 'partitura' },

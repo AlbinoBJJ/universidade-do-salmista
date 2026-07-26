@@ -12,10 +12,10 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
   const [licaoAtual, setLicaoAtual] = useState(licaoEncontrada);
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpm] = useState(licaoAtual?.bpm || 80);
-  const [instrumento, setInstrumento] = useState('acoustic_grand_piano');
+  const [instrumento, setInstrumento] = useState('acoustic_guitar_nylon');
   
   const [abaAtiva, setAbaAtiva] = useState('bemvindo');
-  const [usarSoundfont, setUsarSoundfont] = useState(false);
+  const [usarSoundfont, setUsarSoundfont] = useState(true);
   
   const [usarCountIn, setUsarCountIn] = useState(false);
   const [compassoAtual, setCompassoAtual] = useState(1);
@@ -30,9 +30,8 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
 
   const [currentBeat, setCurrentBeat] = useState(1);
   const [faseCountIn, setFaseCountIn] = useState(false);
-  const [sidebarAberta, setSidebarAberta] = useState(true);
+  const [sidebarAberta, setSidebarAberta] = useState(false); // Fechado por padrão no mobile para melhorar UX
 
-  // Estados extras necessários para o player de partitura
   const [beatsPorCompassoDinamico, setBeatsPorCompassoDinamico] = useState(4);
 
   const syntheticAudio = useAudioEngine({ bpm, instrumento, usarCountIn });
@@ -41,7 +40,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
 
   const { compassos: compassosMapeados, setCompassosMapeados } = useScoreParser(licaoAtual?.arquivoXml);
 
-  // Determina dinamicamente o número de beats do compasso atual selecionado
   useEffect(() => {
     const compassoAtualObj = compassosMapeados.find(c => c.numero === compassoAtual) || compassosMapeados[0];
     if (compassoAtualObj) {
@@ -77,7 +75,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
     setTempoRestante(minutosInput * 60 + segundosInput);
   }, [minutosInput, segundosInput]);
 
-  // Gerenciamento unificado de abas ao trocar de lição
   useEffect(() => {
     if (licaoAtual?.conteudoHtml && licaoAtual.conteudoHtml.abas?.length > 0) {
       setAbaAtiva(licaoAtual.conteudoHtml.abas[0].id);
@@ -91,14 +88,18 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
   }, [licaoAtual]);
 
   return (
-    <div className="container-fluid p-0 m-0">
-      <div className="row g-0" style={{ minHeight: 'calc(100vh - 56px)' }}>
+    <div className="container-fluid p-0 m-0 overflow-hidden">
+      <div className="row g-0 position-relative" style={{ minHeight: 'calc(100vh - 56px)' }}>
         
-        {/* Sidebar / Menu Lateral */}
+        {/* SIDEBAR RESPONSIVA (Drawer Overlay no mobile / Coluna fixa no Desktop) */}
         {sidebarAberta && (
-          <div className="col-md-3 col-lg-2 bg-white border-end p-0 transition-all">
+          <div 
+            className="col-8 col-md-3 col-lg-2 bg-white border-end p-0 position-absolute position-md-relative h-100 shadow-lg shadow-md-none" 
+            style={{ zIndex: 1050, top: 0, left: 0, bottom: 0 }}
+          >
             <div className="p-3 bg-light border-bottom fw-bold text-success d-flex justify-content-between align-items-center">
               <span>Módulos de Estudo</span>
+              <button className="btn-close d-md-none" onClick={() => setSidebarAberta(false)}></button>
             </div>
             <ul className="list-group list-group-flush text-start">
               {listaLicoes.map((licao) => (
@@ -108,6 +109,7 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                     setLicaoAtual(licao);
                     setIsPlaying(false);
                     setCompassoAtual(1);
+                    setSidebarAberta(false);
                   }}
                   className={`list-group-item list-group-item-action py-3 text-truncate ${
                     licaoAtual.id === licao.id ? 'active bg-success border-success text-white' : ''
@@ -120,47 +122,44 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
           </div>
         )}
 
-        {/* Conteúdo Principal */}
-        <div className={`${sidebarAberta ? 'col-md-9 col-lg-10' : 'col-12'} p-4 bg-light transition-all position-relative`}>
+        {/* CONTEÚDO PRINCIPAL */}
+        <div className="col-12 col-md p-2 p-md-3 bg-light position-relative">
           
-          {/* Botão de Recolher/Expandir Sidebar */}
-          <button
-            className="btn btn-light border shadow-sm position-absolute top-0 start-0 m-3 z-3 d-flex align-items-center justify-content-center"
-            style={{ width: '40px', height: '40px', borderRadius: '8px' }}
-            onClick={() => setSidebarAberta(!sidebarAberta)}
-            title={sidebarAberta ? "Recolher barra lateral" : "Expandir barra lateral"}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {sidebarAberta ? (
-                <path d="M4 6H20M4 12H20M4 18H20M9 6V18" stroke="#198754" strokeWidth="2" strokeLinecap="round"/>
-              ) : (
-                <path d="M4 6H20M4 12H20M4 18H20M15 6V18" stroke="#198754" strokeWidth="2" strokeLinecap="round"/>
-              )}
-            </svg>
-          </button>
+          <div className="d-flex align-items-center gap-2 mb-2">
+            <button
+              className="btn btn-light border shadow-sm d-flex align-items-center justify-content-center"
+              style={{ width: '38px', height: '38px', borderRadius: '8px' }}
+              onClick={() => setSidebarAberta(!sidebarAberta)}
+              title="Alternar Menu de Lições"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 6H20M4 12H20M4 18H20" stroke="#198754" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </button>
+            <span className="small text-muted fw-semibold">Selecionar Lição / Módulo</span>
+          </div>
 
-          <div className="card shadow-sm border-0 p-4 ps-5 mt-2">
-            <div className="ms-5">
-              <h1 className="text-success fw-bold mb-2">{licaoAtual.title}</h1>
-              <hr />
-              <p className="lead mt-3">{licaoAtual.resumo}</p>
+          {/* CABEÇALHO COMPACTO */}
+          <div className="card shadow-sm border-0 p-3 mb-2">
+            <div>
+              <h4 className="text-success fw-bold m-0 fs-5 fs-md-4">{licaoAtual.title}</h4>
+              <p className="text-secondary small m-0 mt-1">{licaoAtual.resumo}</p>
             </div>
             
-            {/* Renderização para Lições Conceituais (conteudoHtml) */}
             {licaoAtual.conteudoHtml ? (
-              <div className="mt-4 text-start">
+              <div className="mt-3 text-start">
                 {licaoAtual.conteudoHtml.citacao && (
-                  <div className="card p-3 bg-light border-start border-4 border-success mb-4 shadow-sm">
-                    <p className="fst-italic text-dark mb-0">{licaoAtual.conteudoHtml.citacao}</p>
+                  <div className="card p-2 bg-light border-start border-3 border-success mb-3 shadow-sm">
+                    <p className="fst-italic text-dark small mb-0">{licaoAtual.conteudoHtml.citacao}</p>
                   </div>
                 )}
 
                 {licaoAtual.conteudoHtml.abas && (
-                  <div className="d-flex gap-2 mb-4 flex-wrap">
+                  <div className="d-flex gap-2 mb-3 flex-wrap">
                     {licaoAtual.conteudoHtml.abas.map((aba) => (
                       <button
                         key={aba.id}
-                        className={`btn ${abaAtiva === aba.id ? 'btn-success fw-bold' : 'btn-outline-success'}`}
+                        className={`btn btn-sm ${abaAtiva === aba.id ? 'btn-success fw-bold' : 'btn-outline-success'}`}
                         onClick={() => setAbaAtiva(aba.id)}
                       >
                         {aba.label}
@@ -174,19 +173,19 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                   if (!abaAtual) return null;
 
                   return (
-                    <div className="card p-4 shadow-sm border-0 bg-white">
-                      <h4 className="text-success fw-bold mb-3">{abaAtual.titulo}</h4>
-                      {abaAtual.texto && <p className="mb-3 text-secondary">{abaAtual.texto}</p>}
+                    <div className="card p-3 shadow-sm border-0 bg-white">
+                      <h5 className="text-success fw-bold mb-2" style={{ fontSize: '16px' }}>{abaAtual.titulo}</h5>
+                      {abaAtual.texto && <p className="mb-2 text-secondary small">{abaAtual.texto}</p>}
                       {abaAtual.subtopico && (
                         <>
-                          <h5 className="fw-bold text-dark mt-4">{abaAtual.subtopico}</h5>
-                          <p className="text-secondary">{abaAtual.textoSub}</p>
+                          <h6 className="fw-bold text-dark mt-3" style={{ fontSize: '14px' }}>{abaAtual.subtopico}</h6>
+                          <p className="text-secondary small">{abaAtual.textoSub}</p>
                         </>
                       )}
                       {abaAtual.itens && (
                         <ul className="list-unstyled d-flex flex-column gap-2 mt-2">
                           {abaAtual.itens.map((item, idx) => (
-                            <li key={idx} className="bg-light p-3 rounded border-start border-3 border-success" dangerouslySetInnerHTML={{ __html: item }} />
+                            <li key={idx} className="bg-light p-2 rounded border-start border-3 border-success small" dangerouslySetInnerHTML={{ __html: item }} />
                           ))}
                         </ul>
                       )}
@@ -195,14 +194,19 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                 })()}
               </div>
             ) : licaoAtual.temPartitura ? (
-              /* Renderização para Lições com Partitura e Suporte a Abas de Apoio */
-              <div className="mt-4">
+              <div className="mt-3">
+                {licaoAtual.citacao && (
+                  <div className="card p-2 bg-light border-start border-3 border-success mb-3 shadow-sm text-start">
+                    <p className="fst-italic text-dark small mb-0">{licaoAtual.citacao}</p>
+                  </div>
+                )}
+
                 {licaoAtual.abas && licaoAtual.abas.length > 0 && (
-                  <div className="d-flex gap-2 mb-4 flex-wrap">
+                  <div className="d-flex gap-2 mb-3 flex-wrap">
                     {licaoAtual.abas.map((aba) => (
                       <button
                         key={aba.id}
-                        className={`btn ${abaAtiva === aba.id ? 'btn-success fw-bold' : 'btn-outline-success'}`}
+                        className={`btn btn-sm ${abaAtiva === aba.id ? 'btn-success fw-bold' : 'btn-outline-success'}`}
                         onClick={() => setAbaAtiva(aba.id)}
                       >
                         {aba.label}
@@ -212,27 +216,28 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                 )}
 
                 {abaAtiva === 'apoio' ? (
-                  <div className="card p-4 shadow-sm border-0 bg-white text-start">
-                    <h4 className="text-success fw-bold mb-3">
+                  <div className="card p-3 shadow-sm border-0 bg-white text-start">
+                    <h5 className="text-success fw-bold mb-2" style={{ fontSize: '16px' }}>
                       <i className="bi bi-folder2-open me-2"></i> Material de Apoio
-                    </h4>
-                    <p className="text-secondary">{licaoAtual.abas.find(a => a.id === 'apoio')?.texto}</p>
+                    </h5>
+                    <p className="text-secondary small">{licaoAtual.abas.find(a => a.id === 'apoio')?.texto}</p>
                     
-                    <div className="d-flex flex-column gap-3 mt-3">
+                    <div className="d-flex flex-column gap-2 mt-2">
                       {licaoAtual.abas.find(a => a.id === 'apoio')?.downloads?.map((item, idx) => (
-                        <div key={idx} className="d-flex align-items-center justify-content-between p-3 bg-light rounded border">
-                          <div className="d-flex align-items-center gap-3">
-                            <i className={`bi ${item.icone || 'bi-file-earmark-text'} fs-4 text-success`}></i>
-                            <span className="fw-semibold text-dark">{item.nome}</span>
+                        <div key={idx} className="d-flex align-items-center justify-content-between p-2 bg-light rounded border flex-wrap gap-2">
+                          <div className="d-flex align-items-center gap-2">
+                            <i className={`bi ${item.icone || 'bi-file-earmark-text'} fs-5 text-success`}></i>
+                            <span className="fw-semibold text-dark small">{item.nome}</span>
                           </div>
                           <a 
                             href={item.url} 
                             download 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="btn btn-sm btn-success fw-bold px-3"
+                            className="btn btn-sm btn-success fw-bold px-2 py-1"
+                            style={{ fontSize: '12px' }}
                           >
-                            <i className="bi bi-download me-1"></i> Baixar Arquivo
+                            <i className="bi bi-download me-1"></i> Baixar
                           </a>
                         </div>
                       ))}
@@ -300,20 +305,20 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                     />
 
                     {licaoAtual.letraCompleta && (
-                      <div className="card mt-4 p-4 border-0 bg-light shadow-sm text-start">
-                        <h5 className="text-success fw-bold mb-3">
+                      <div className="card mt-3 p-3 border-0 bg-light shadow-sm text-start">
+                        <h6 className="text-success fw-bold mb-2" style={{ fontSize: '15px' }}>
                           <i className="bi bi-journal-text me-2"></i> Letra e Cifras para Acompanhamento
-                        </h5>
-                        <hr className="text-muted" />
+                        </h6>
+                        <hr className="text-muted my-2" />
                         <div className="row">
                           {licaoAtual.letraCompleta.map((bloco, index) => (
-                            <div key={index} className="col-md-6 mb-3">
-                              <span className="badge bg-success mb-1">
+                            <div key={index} className="col-md-6 mb-2">
+                              <span className="badge bg-success mb-1" style={{ fontSize: '10px' }}>
                                 {bloco.estrofe === "Refrão" ? "Refrão" : `Estrofe ${bloco.estrofe}`}
                               </span>
                               <div className="ps-2 border-start border-3 border-success">
                                 {bloco.linhas.map((linha, lIndex) => (
-                                  <p key={lIndex} className="mb-1 text-dark small" style={{ fontFamily: 'var(--sans)' }}>
+                                  <p key={lIndex} className="mb-1 text-dark small" style={{ fontSize: '13px' }}>
                                     {linha}
                                   </p>
                                 ))}
@@ -327,7 +332,7 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                 )}
               </div>
             ) : (
-              <div className="alert alert-secondary mt-4">
+              <div className="alert alert-secondary mt-3 small">
                 <i className="bi bi-info-circle-fill me-2"></i>
                 Esta lição foca na introdução conceitual e não possui partitura associada.
               </div>

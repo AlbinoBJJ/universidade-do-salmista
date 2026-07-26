@@ -6,7 +6,7 @@ export const listaLicoes = [
   licao0000,
   licao0001,
   licao0002,
-    { 
+  { 
     id: 'licao0003', 
     title: 'Lição 3: Em breve', 
     resumo: 'Conteúdo em desenvolvimento.',

@@ -41,17 +41,22 @@ export function useSoundfontEngine({ bpm, instrumento }) {
     return audioCtxRef.current;
   };
 
-  // Carrega o instrumento via Soundfont quando o usuário seleciona
+  // Carrega o instrumento via Soundfont de forma precisa conforme a escolha do usuário
   useEffect(() => {
     let isMounted = true;
     const ctx = getAudioContext();
     if (!ctx) return;
 
     setCarregandoSom(true);
-    // Mapeia os nomes dos instrumentos para o padrão suportado pelo Soundfont
+    
+    // CORREÇÃO: Mapeamento rigoroso e correto para cada tipo de instrumento selecionado
     let soundfontName = 'acoustic_grand_piano';
-    if (instrumento === 'acoustic_guitar_steel' || instrumento === 'acoustic_guitar_nylon') {
+    if (instrumento === 'acoustic_guitar_nylon') {
       soundfontName = 'acoustic_guitar_nylon';
+    } else if (instrumento === 'acoustic_guitar_steel') {
+      soundfontName = 'acoustic_guitar_steel';
+    } else if (instrumento === 'acoustic_grand_piano') {
+      soundfontName = 'acoustic_grand_piano';
     }
 
     Soundfont.instrument(ctx, soundfontName, { soundfont: 'MusyngKite' })
@@ -63,7 +68,14 @@ export function useSoundfontEngine({ bpm, instrumento }) {
       })
       .catch((err) => {
         console.error("Erro ao carregar soundfont:", err);
-        if (isMounted) setCarregandoSom(false);
+        // Fallback seguro caso o soundfont específico falhe
+        Soundfont.instrument(ctx, 'acoustic_grand_piano', { soundfont: 'MusyngKite' })
+          .then((fallbackPlayer) => {
+            if (isMounted) {
+              instrumentPlayerRef.current = fallbackPlayer;
+              setCarregandoSom(false);
+            }
+          });
       });
 
     return () => {
@@ -115,15 +127,12 @@ export function useSoundfontEngine({ bpm, instrumento }) {
       if (!ctx) return;
 
       if (instrumentPlayerRef.current) {
-        // Reproduz usando o player de Soundfont de alta fidelidade
-        // Converte frequência Hz para número MIDI note number
         const midiNote = Math.round(69 + 12 * Math.log2(freq / 440));
         instrumentPlayerRef.current.play(midiNote, ctx.currentTime, {
           gain: vol * 1.5,
           duration: durationInSeconds
         });
       } else {
-        // Fallback de segurança caso o soundfont ainda esteja carregando
         const osc = ctx.createOscillator();
         const envelope = ctx.createGain();
         osc.type = 'triangle';
