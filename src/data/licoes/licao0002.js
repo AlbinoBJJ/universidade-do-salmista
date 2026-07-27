@@ -1,6 +1,6 @@
 export default {
   id: 'licao0002',
-  title: 'Lição 2: Confesso a Deus',
+  title: 'Confesso a Deus',
   resumo: 'Estudo do Ato Penitencial "Confesso a Deus", adaptado para acompanhamento e leitura rítmica.',
   temPartitura: true,
   citacao: '"Senhor, tende piedade de nós. Cristo, tende piedade de nós. Senhor, tende piedade de nós."',

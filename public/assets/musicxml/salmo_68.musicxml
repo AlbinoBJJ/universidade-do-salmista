@@ -8,7 +8,7 @@
     <creator type="composer">Compositor / arranjador</creator>
     <encoding>
       <software>MuseScore Studio 4.7.4</software>
-      <encoding-date>2026-07-25</encoding-date>
+      <encoding-date>2026-07-27</encoding-date>
       <supports element="accidental" type="yes"/>
       <supports element="beam" type="yes"/>
       <supports element="print" attribute="new-page" type="yes" value="yes"/>
@@ -25,6 +25,7 @@
       <millimeters>7</millimeters>
       <tenths>40</tenths>
       </scaling>
+    <concert-score/>
     <page-layout>
       <page-height>1696.72</page-height>
       <page-width>1200.33</page-width>
@@ -121,13 +122,12 @@
         <clef>
           <sign>G</sign>
           <line>2</line>
-          <clef-octave-change>-1</clef-octave-change>
           </clef>
         </attributes>
       <note default-x="122.21" default-y="-45">
         <pitch>
           <step>D</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -142,7 +142,7 @@
       <note default-x="162.24" default-y="-45">
         <pitch>
           <step>D</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -165,7 +165,7 @@
       <note default-x="12.5" default-y="-45">
         <pitch>
           <step>D</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>
@@ -179,7 +179,7 @@
       <note default-x="72.55" default-y="-45">
         <pitch>
           <step>D</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -194,7 +194,7 @@
       <note default-x="112.58" default-y="-35">
         <pitch>
           <step>F</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <tie type="start"/>
@@ -213,7 +213,7 @@
       <note default-x="152.61" default-y="-35">
         <pitch>
           <step>F</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <tie type="stop"/>
@@ -228,7 +228,7 @@
       <note default-x="192.65" default-y="-30">
         <pitch>
           <step>G</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -251,7 +251,7 @@
       <note default-x="12.5" default-y="-25">
         <pitch>
           <step>A</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>4</duration>
         <voice>1</voice>
@@ -265,7 +265,7 @@
       <note default-x="102.57" default-y="-25">
         <pitch>
           <step>A</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -280,7 +280,7 @@
       <note default-x="142.61" default-y="-25">
         <pitch>
           <step>A</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -303,7 +303,7 @@
       <note default-x="12.5" default-y="-30">
         <pitch>
           <step>G</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>
@@ -317,7 +317,7 @@
       <note default-x="72.55" default-y="-35">
         <pitch>
           <step>F</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -332,7 +332,7 @@
       <note default-x="112.58" default-y="-40">
         <pitch>
           <step>E</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <tie type="start"/>
@@ -351,7 +351,7 @@
       <note default-x="152.61" default-y="-40">
         <pitch>
           <step>E</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <tie type="stop"/>
@@ -366,7 +366,7 @@
       <note default-x="192.65" default-y="-35">
         <pitch>
           <step>F</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -389,7 +389,7 @@
       <note default-x="12.5" default-y="-45">
         <pitch>
           <step>D</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>4</duration>
         <voice>1</voice>
@@ -484,7 +484,7 @@
       <note default-x="86.58" default-y="-45">
         <pitch>
           <step>D</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>16</duration>
         <voice>1</voice>
@@ -493,7 +493,7 @@
       <note default-x="209.16" default-y="-35">
         <pitch>
           <step>F</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>
@@ -509,7 +509,7 @@
       <note default-x="244.21" default-y="-40">
         <pitch>
           <step>E</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>
@@ -527,7 +527,7 @@
       <note default-x="10.66" default-y="-50">
         <pitch>
           <step>C</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>16</duration>
         <voice>1</voice>
@@ -536,7 +536,7 @@
       <note default-x="133.23" default-y="-40">
         <pitch>
           <step>E</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>
@@ -552,7 +552,7 @@
       <note default-x="168.29" default-y="-45">
         <pitch>
           <step>D</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>
@@ -575,7 +575,7 @@
         <pitch>
           <step>B</step>
           <alter>-1</alter>
-          <octave>2</octave>
+          <octave>3</octave>
           </pitch>
         <duration>16</duration>
         <voice>1</voice>
@@ -584,7 +584,7 @@
       <note default-x="133.23" default-y="-45">
         <pitch>
           <step>D</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>
@@ -601,7 +601,7 @@
         <pitch>
           <step>C</step>
           <alter>1</alter>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>
@@ -621,7 +621,7 @@
         <pitch>
           <step>C</step>
           <alter>1</alter>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>16</duration>
         <voice>1</voice>
@@ -632,7 +632,7 @@
         <pitch>
           <step>C</step>
           <alter>1</alter>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>
@@ -642,7 +642,7 @@
       <note default-x="177.69" default-y="-55">
         <pitch>
           <step>B</step>
-          <octave>2</octave>
+          <octave>3</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -655,7 +655,7 @@
         <pitch>
           <step>C</step>
           <alter>1</alter>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>1</duration>
         <voice>1</voice>
@@ -672,7 +672,7 @@
       <note default-x="224.43" default-y="-45">
         <pitch>
           <step>D</step>
-          <octave>3</octave>
+          <octave>4</octave>
           </pitch>
         <duration>2</duration>
         <voice>1</voice>

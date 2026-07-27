@@ -6,8 +6,24 @@ import { useSoundfontEngine } from '../hooks/useSoundfontEngine';
 import { useScoreParser } from '../hooks/useScoreParser';
 import { listaLicoes } from '../data/licoes';
 
+const extrairTodasLicoes = (estrutura) => {
+  let resultado = [];
+  estrutura.forEach(sec => {
+    sec.itens.forEach(item => {
+      if (item.subgrupo) {
+        resultado = resultado.concat(item.itens);
+      } else {
+        resultado.push(item);
+      }
+    });
+  });
+  return resultado;
+};
+
+const todasAsLicoes = extrairTodasLicoes(listaLicoes);
+
 export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
-  const licaoEncontrada = listaLicoes.find(l => l.id === licaoInicialId) || listaLicoes[1];
+  const licaoEncontrada = todasAsLicoes.find(l => l.id === licaoInicialId) || todasAsLicoes[1];
   const [licaoAtual, setLicaoAtual] = useState(licaoEncontrada);
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpm] = useState(licaoAtual?.bpm || 80);
@@ -30,6 +46,20 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
   const [currentBeat, setCurrentBeat] = useState(1);
   const [faseCountIn, setFaseCountIn] = useState(false);
   const [sidebarAberta, setSidebarAberta] = useState(false);
+
+  // Estado para controlar quais subgrupos litúrgicos estão expandidos (ex: { salmos: true })
+  const [gruposAbertos, setGruposAbertos] = useState({
+    entrada: true,
+    ato_penitencial: true,
+    salmos: true
+  });
+
+  const toggleGrupo = (idGrupo) => {
+    setGruposAbertos(prev => ({
+      ...prev,
+      [idGrupo]: !prev[idGrupo]
+    }));
+  };
 
   const [beatsPorCompassoDinamico, setBeatsPorCompassoDinamico] = useState(4);
 
@@ -74,7 +104,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
     setTempoRestante(minutosInput * 60 + segundosInput);
   }, [minutosInput, segundosInput]);
 
-  // CORREÇÃO: Lê corretamente as abas independentemente de estarem em 'conteudoHtml.abas' ou em 'abas'
   useEffect(() => {
     if (licaoAtual?.conteudoHtml && licaoAtual.conteudoHtml.abas?.length > 0) {
       setAbaAtiva(licaoAtual.conteudoHtml.abas[0].id);
@@ -88,58 +117,121 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
   }, [licaoAtual]);
 
   return (
-    <div className="container-fluid p-0 m-0 overflow-hidden">
+    <div className="container-fluid p-0 m-0 overflow-hidden position-relative">
+      
+      {/* BOTÃO FLUTUANTE FIXO */}
+      <div className="position-fixed" style={{ top: '70px', left: '15px', zIndex: 1050 }}>
+        <button
+          className="btn btn-success shadow-lg d-flex align-items-center justify-content-center text-white rounded-circle"
+          style={{ width: '45px', height: '45px' }}
+          onClick={() => setSidebarAberta(!sidebarAberta)}
+          title="Alternar Menu de Lições"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6H20M4 12H20M4 18H20" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round"/>
+          </svg>
+        </button>
+      </div>
+
       <div className="row g-0 position-relative" style={{ minHeight: 'calc(100vh - 56px)' }}>
         
-        {/* SIDEBAR RESPONSIVA */}
+        {/* SIDEBAR COM SUBGRUPOS RECOLHÍVEIS */}
         {sidebarAberta && (
           <div 
-            className="col-8 col-md-3 col-lg-2 bg-white border-end p-0 position-absolute position-md-relative h-100 shadow-lg shadow-md-none" 
-            style={{ zIndex: 1100, top: 0, left: 0, bottom: 0 }}
+            className="col-10 col-sm-6 col-md-4 col-lg-3 bg-white border-end p-0 position-fixed h-100 shadow-lg" 
+            style={{ zIndex: 1100, top: 0, left: 0, bottom: 0, display: 'flex', flexDirection: 'column' }}
           >
             <div className="p-3 bg-light border-bottom fw-bold text-success d-flex justify-content-between align-items-center">
-              <span>Módulos de Estudo</span>
-              <button className="btn-close d-md-none" onClick={() => setSidebarAberta(false)}></button>
+              <span>Navegação da Biblioteca</span>
+              <button 
+                className="btn btn-sm btn-outline-secondary border-0 fw-bold" 
+                onClick={() => setSidebarAberta(false)}
+                title="Recolher menu"
+              >
+                ✕ Fechar
+              </button>
             </div>
-            <ul className="list-group list-group-flush text-start">
-              {listaLicoes.map((licao) => (
-                <button
-                  key={licao.id}
-                  onClick={() => {
-                    setLicaoAtual(licao);
-                    setIsPlaying(false);
-                    setCompassoAtual(1);
-                    setSidebarAberta(false);
-                  }}
-                  className={`list-group-item list-group-item-action py-3 text-truncate ${
-                    licaoAtual.id === licao.id ? 'active bg-success border-success text-white' : ''
-                  }`}
-                >
-                  {licao.title}
-                </button>
+            
+            <div className="overflow-y-auto flex-grow-1 text-start p-2">
+              {listaLicoes.map((secao, idx) => (
+                <div key={idx} className="mb-3">
+                  <h6 className="text-uppercase text-muted fw-bold px-2 mb-2" style={{ fontSize: '11px', letterSpacing: '0.5px' }}>
+                    {secao.categoria}
+                  </h6>
+                  
+                  <div className="list-group list-group-flush">
+                    {secao.itens.map((itemSecao, itemIdx) => {
+                      if (itemSecao.subgrupo) {
+                        const aberto = gruposAbertos[itemSecao.idGrupo];
+                        return (
+                          <div key={itemIdx} className="mb-1">
+                            <button
+                              onClick={() => toggleGrupo(itemSecao.idGrupo)}
+                              className="w-100 btn btn-sm d-flex justify-content-between align-items-center text-success fw-semibold px-2 py-1 bg-light border-0 text-start"
+                              style={{ fontSize: '12px' }}
+                            >
+                              <span>{itemSecao.subgrupo}</span>
+                              <span style={{ transform: aberto ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+                                ▼
+                              </span>
+                            </button>
+                            
+                            {aberto && (
+                              <div className="ps-2 border-start border-2 border-light ms-2 my-1">
+                                {itemSecao.itens.map((licao) => (
+                                  <button
+                                    key={licao.id}
+                                    onClick={() => {
+                                      setLicaoAtual(licao);
+                                      setIsPlaying(false);
+                                      setCompassoAtual(1);
+                                      setSidebarAberta(false);
+                                    }}
+                                    className={`list-group-item list-group-item-action py-1 px-2 text-truncate rounded mb-1 ${
+                                      licaoAtual.id === licao.id ? 'active bg-success border-success text-white' : ''
+                                    }`}
+                                    style={{ fontSize: '13px' }}
+                                  >
+                                    {licao.title}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <button
+                          key={itemSecao.id}
+                          onClick={() => {
+                            setLicaoAtual(itemSecao);
+                            setIsPlaying(false);
+                            setCompassoAtual(1);
+                            setSidebarAberta(false);
+                          }}
+                          className={`list-group-item list-group-item-action py-2 px-3 text-truncate rounded mb-1 ${
+                            licaoAtual.id === itemSecao.id ? 'active bg-success border-success text-white' : ''
+                          }`}
+                          style={{ fontSize: '14px' }}
+                        >
+                          {itemSecao.title}
+                          {itemSecao.resumo?.includes('desenvolvimento') && (
+                            <span className="badge bg-secondary ms-2" style={{ fontSize: '10px' }}>Em breve</span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         )}
 
         {/* CONTEÚDO PRINCIPAL */}
         <div className="col-12 col-md p-2 p-md-3 bg-light position-relative">
           
-          <div className="d-flex align-items-center gap-2 mb-2">
-            <button
-              className="btn btn-light border shadow-sm d-flex align-items-center justify-content-center"
-              style={{ width: '38px', height: '38px', borderRadius: '8px' }}
-              onClick={() => setSidebarAberta(!sidebarAberta)}
-              title="Alternar Menu de Lições"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 6H20M4 12H20M4 18H20" stroke="#198754" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
-            </button>
-            <span className="small text-muted fw-semibold">Selecionar Lição / Módulo</span>
-          </div>
-
-          {/* CABEÇALHO COMPACTO */}
           <div className="card shadow-sm border-0 p-3 mb-2">
             <div>
               <h4 className="text-success fw-bold m-0 fs-5 fs-md-4">{licaoAtual.title}</h4>
@@ -201,7 +293,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                   </div>
                 )}
 
-                {/* BOTÕES DE ABAS GERAIS (Ex: Lição 3 com Partitura + Explicação Teórica) */}
                 {licaoAtual.abas && licaoAtual.abas.length > 0 && (
                   <div className="d-flex gap-2 mb-3 flex-wrap">
                     {licaoAtual.abas.map((aba) => (
@@ -216,7 +307,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                   </div>
                 )}
 
-                {/* RENDERIZAÇÃO DA ABA ATIVA (SUPORTE A CONTEÚDO TEÓRICO, PARTITURA E APOIO) */}
                 {(() => {
                   const abaAtual = licaoAtual.abas?.find(a => a.id === abaAtiva) || licaoAtual.abas?.[0];
                   if (!abaAtual) return null;
@@ -275,7 +365,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                     );
                   }
 
-                  // Aba padrão de Partitura & Tocar
                   return (
                     <>
                       <PartituraViewer 
@@ -331,7 +420,7 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
             ) : (
               <div className="alert alert-secondary mt-3 small">
                 <i className="bi bi-info-circle-fill me-2"></i>
-                Esta lição foca na introdução conceitual e não possui partitura associada.
+                Este item litúrgico está em desenvolvimento ou aguardando cadastro de partitura.
               </div>
             )}
           </div>
@@ -339,7 +428,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
 
       </div>
 
-      {/* CONTROLES E MIXER */}
       <ControlesTreino 
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}

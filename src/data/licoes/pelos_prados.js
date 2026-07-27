@@ -1,6 +1,6 @@
 export default {
   id: 'licao0001',
-  title: 'Lição 1: Pelos Prados',
+  title: 'Pelos Prados e Campinas',
   resumo: 'Partitura da música Pelos Prados e Campinas adaptada em C maior para o Salmo 22(23).',
   temPartitura: true,
   citacao: '"O Senhor é meu pastor; nada me faltará." — (Sl 23,1)',
