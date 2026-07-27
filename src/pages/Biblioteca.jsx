@@ -47,11 +47,17 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
   const [faseCountIn, setFaseCountIn] = useState(false);
   const [sidebarAberta, setSidebarAberta] = useState(false);
 
-  // Estado para controlar quais subgrupos litúrgicos estão expandidos (ex: { salmos: true })
+  // Estado para controlar quais subgrupos estão expandidos. Todos começam como `false` (recolhidos por padrão).
   const [gruposAbertos, setGruposAbertos] = useState({
-    entrada: true,
-    ato_penitencial: true,
-    salmos: true
+    modulo_teoria: false,
+    modulo_harmonia: false,
+    entrada: false,
+    ato_penitencial: false,
+    gloria: false,
+    salmos: false,
+    aclamacao: false,
+    ofertorio: false,
+    comunhao: false
   });
 
   const toggleGrupo = (idGrupo) => {

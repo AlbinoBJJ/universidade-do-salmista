@@ -1,5 +1,5 @@
 export default {
-  id: 'licao0000',
+  id: 'introducao',
   title: 'Introdução',
   resumo: 'Bem-vindo à Universidade do Salmista. Compreenda o papel do instrumento a serviço da Palavra.',
   temPartitura: false,

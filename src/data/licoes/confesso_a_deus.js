@@ -1,5 +1,5 @@
 export default {
-  id: 'licao0002',
+  id: 'confesso_a_deus',
   title: 'Confesso a Deus',
   resumo: 'Estudo do Ato Penitencial "Confesso a Deus", adaptado para acompanhamento e leitura rítmica.',
   temPartitura: true,

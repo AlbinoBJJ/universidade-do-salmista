@@ -1,6 +1,6 @@
 export default {
-  id: 'licao0003',
-  title: 'Lição 3: As Cordas Soltas',
+  id: 'cordas_soltas',
+  title: 'Lição 1: As Cordas Soltas',
   resumo: 'Conhecendo as cordas soltas na pauta.',
   temPartitura: true,
   citacao: '"Tudo o que fizerem, façam de todo o coração, como para o Senhor, e não para os homens." (Colossenses 3:23)',

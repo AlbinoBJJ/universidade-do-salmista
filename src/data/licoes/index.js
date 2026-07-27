@@ -1,7 +1,7 @@
-import licao0000 from './licao0000';
+import introducao from './introducao';
 import pelos_prados from './pelos_prados';
-import licao0002 from './licao0002';
-import licao0003 from './licao0003';
+import confesso_a_deus from './confesso_a_deus';
+import cordas_soltas from './cordas_soltas';
 import salmo_24 from './salmo_24';
 import salmo_68 from './salmo_68';
 
@@ -9,14 +9,32 @@ export const listaLicoes = [
   {
     categoria: "Módulos de Estudo",
     itens: [
-      licao0000,
-      licao0003,
-      { 
-        id: 'licao0004', 
-        title: 'Lição 4: Em breve', 
-        resumo: 'Conteúdo em desenvolvimento.',
-        temPartitura: false 
+      introducao, // Fica solto pois não tem submenu
+      {
+        subgrupo: "Teoria",
+        idGrupo: "modulo_teoria",
+        itens: [
+          cordas_soltas,
+          { 
+            id: 'licao0004', 
+            title: 'Lição 2: Em breve', 
+            resumo: 'Conteúdo em desenvolvimento.',
+            temPartitura: false 
+          }
+        ]
       },
+      {
+        subgrupo: "Harmonia",
+        idGrupo: "modulo_harmonia",
+        itens: [
+          { 
+            id: 'harmonia_01', 
+            title: 'Introdução à Harmonia (Em breve)', 
+            resumo: 'Conteúdo em desenvolvimento.',
+            temPartitura: false 
+          }
+        ]
+      }
     ]
   },
   {
@@ -32,7 +50,7 @@ export const listaLicoes = [
       {
         subgrupo: "Ato Penitencial",
         idGrupo: "ato_penitencial",
-        itens: [licao0002] // Confesso a Deus
+        itens: [confesso_a_deus]
       },
       {
         subgrupo: "Glória",
