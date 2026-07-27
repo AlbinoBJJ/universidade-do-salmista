@@ -74,6 +74,7 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
     setTempoRestante(minutosInput * 60 + segundosInput);
   }, [minutosInput, segundosInput]);
 
+  // CORREÇÃO: Lê corretamente as abas independentemente de estarem em 'conteudoHtml.abas' ou em 'abas'
   useEffect(() => {
     if (licaoAtual?.conteudoHtml && licaoAtual.conteudoHtml.abas?.length > 0) {
       setAbaAtiva(licaoAtual.conteudoHtml.abas[0].id);
@@ -200,6 +201,7 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                   </div>
                 )}
 
+                {/* BOTÕES DE ABAS GERAIS (Ex: Lição 3 com Partitura + Explicação Teórica) */}
                 {licaoAtual.abas && licaoAtual.abas.length > 0 && (
                   <div className="d-flex gap-2 mb-3 flex-wrap">
                     {licaoAtual.abas.map((aba) => (
@@ -214,84 +216,117 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                   </div>
                 )}
 
-                {abaAtiva === 'apoio' ? (
-                  <div className="card p-3 shadow-sm border-0 bg-white text-start">
-                    <h5 className="text-success fw-bold mb-2" style={{ fontSize: '16px' }}>
-                      <i className="bi bi-folder2-open me-2"></i> Material de Apoio
-                    </h5>
-                    <p className="text-secondary small">{licaoAtual.abas.find(a => a.id === 'apoio')?.texto}</p>
-                    
-                    <div className="d-flex flex-column gap-2 mt-2">
-                      {licaoAtual.abas.find(a => a.id === 'apoio')?.downloads?.map((item, idx) => (
-                        <div key={idx} className="d-flex align-items-center justify-content-between p-2 bg-light rounded border flex-wrap gap-2">
-                          <div className="d-flex align-items-center gap-2">
-                            <i className={`bi ${item.icone || 'bi-file-earmark-text'} fs-5 text-success`}></i>
-                            <span className="fw-semibold text-dark small">{item.nome}</span>
-                          </div>
-                          <a 
-                            href={item.url} 
-                            download 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="btn btn-sm btn-success fw-bold px-2 py-1"
-                            style={{ fontSize: '12px' }}
-                          >
-                            <i className="bi bi-download me-1"></i> Baixar
-                          </a>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <PartituraViewer 
-                      arquivoXml={licaoAtual.arquivoXml}
-                      isPlaying={isPlaying}
-                      setIsPlaying={setIsPlaying}
-                      bpm={bpm}
-                      usarCountIn={usarCountIn}
-                      compassoAtual={compassoAtual}
-                      setCompassoAtual={setCompassoAtual}
-                      compassosMapeados={compassosMapeados}
-                      setCompassosMapeados={setCompassosMapeados}
-                      setBeatsPorCompassoDinamico={setBeatsPorCompassoDinamico}
-                      audioEngine={audioEngine}
-                      usarLooper={usarLooper}
-                      compassoInicial={compassoInicial}
-                      compassoFinal={compassoFinal}
-                      usarTimer={usarTimer}
-                      tempoRestante={tempoRestante}
-                      setTempoRestante={setTempoRestante}
-                      setCurrentBeat={setCurrentBeat}
-                      setFaseCountIn={setFaseCountIn}
-                    />
+                {/* RENDERIZAÇÃO DA ABA ATIVA (SUPORTE A CONTEÚDO TEÓRICO, PARTITURA E APOIO) */}
+                {(() => {
+                  const abaAtual = licaoAtual.abas?.find(a => a.id === abaAtiva) || licaoAtual.abas?.[0];
+                  if (!abaAtual) return null;
 
-                    {licaoAtual.letraCompleta && (
-                      <div className="card mt-3 p-3 border-0 bg-light shadow-sm text-start">
-                        <h6 className="text-success fw-bold mb-2" style={{ fontSize: '15px' }}>
-                          <i className="bi bi-journal-text me-2"></i> Letra e Cifras para Acompanhamento
-                        </h6>
-                        <hr className="text-muted my-2" />
-                        <div className="row">
-                          {licaoAtual.letraCompleta.map((bloco, index) => (
-                            <div key={index} className="col-md-6 mb-2">
-                              <span className="badge bg-success mb-1" style={{ fontSize: '10px' }}>
-                                {bloco.estrofe === "Refrão" ? "Refrão" : `Estrofe ${bloco.estrofe}`}
-                              </span>
-                              <div className="ps-2 border-start border-3 border-success">
-                                {bloco.linhas.map((linha, lIndex) => (
-                                  <p key={lIndex} className="mb-1 text-dark small" style={{ fontSize: '13px' }}>
-                                    {linha}
-                                  </p>
-                                ))}
+                  if (abaAtual.tipo === 'conteudo') {
+                    return (
+                      <div className="card p-3 shadow-sm border-0 bg-white text-start">
+                        <h5 className="text-success fw-bold mb-2" style={{ fontSize: '16px' }}>{abaAtual.titulo}</h5>
+                        {abaAtual.texto && <p className="mb-2 text-secondary small">{abaAtual.texto}</p>}
+                        {abaAtual.subtopico && (
+                          <>
+                            <h6 className="fw-bold text-dark mt-3" style={{ fontSize: '14px' }}>{abaAtual.subtopico}</h6>
+                            <p className="text-secondary small">{abaAtual.textoSub}</p>
+                          </>
+                        )}
+                        {abaAtual.itens && (
+                          <ul className="list-unstyled d-flex flex-column gap-2 mt-2">
+                            {abaAtual.itens.map((item, idx) => (
+                              <li key={idx} className="bg-light p-2 rounded border-start border-3 border-success small" dangerouslySetInnerHTML={{ __html: item }} />
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    );
+                  }
+
+                  if (abaAtiva === 'apoio') {
+                    return (
+                      <div className="card p-3 shadow-sm border-0 bg-white text-start">
+                        <h5 className="text-success fw-bold mb-2" style={{ fontSize: '16px' }}>
+                          <i className="bi bi-folder2-open me-2"></i> Material de Apoio
+                        </h5>
+                        <p className="text-secondary small">{abaAtual.texto}</p>
+                        
+                        <div className="d-flex flex-column gap-2 mt-2">
+                          {abaAtual.downloads?.map((item, idx) => (
+                            <div key={idx} className="d-flex align-items-center justify-content-between p-2 bg-light rounded border flex-wrap gap-2">
+                              <div className="d-flex align-items-center gap-2">
+                                <i className={`bi ${item.icone || 'bi-file-earmark-text'} fs-5 text-success`}></i>
+                                <span className="fw-semibold text-dark small">{item.nome}</span>
                               </div>
+                              <a 
+                                href={item.url} 
+                                download 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="btn btn-sm btn-success fw-bold px-2 py-1"
+                                style={{ fontSize: '12px' }}
+                              >
+                                <i className="bi bi-download me-1"></i> Baixar
+                              </a>
                             </div>
                           ))}
                         </div>
                       </div>
-                    )}
-                  </>
-                )}
+                    );
+                  }
+
+                  // Aba padrão de Partitura & Tocar
+                  return (
+                    <>
+                      <PartituraViewer 
+                        arquivoXml={licaoAtual.arquivoXml}
+                        isPlaying={isPlaying}
+                        setIsPlaying={setIsPlaying}
+                        bpm={bpm}
+                        usarCountIn={usarCountIn}
+                        compassoAtual={compassoAtual}
+                        setCompassoAtual={setCompassoAtual}
+                        compassosMapeados={compassosMapeados}
+                        setCompassosMapeados={setCompassosMapeados}
+                        setBeatsPorCompassoDinamico={setBeatsPorCompassoDinamico}
+                        audioEngine={audioEngine}
+                        usarLooper={usarLooper}
+                        compassoInicial={compassoInicial}
+                        compassoFinal={compassoFinal}
+                        usarTimer={usarTimer}
+                        tempoRestante={tempoRestante}
+                        setTempoRestante={setTempoRestante}
+                        setCurrentBeat={setCurrentBeat}
+                        setFaseCountIn={setFaseCountIn}
+                      />
+
+                      {licaoAtual.letraCompleta && (
+                        <div className="card mt-3 p-3 border-0 bg-light shadow-sm text-start">
+                          <h6 className="text-success fw-bold mb-2" style={{ fontSize: '15px' }}>
+                            <i className="bi bi-journal-text me-2"></i> Letra e Cifras para Acompanhamento
+                          </h6>
+                          <hr className="text-muted my-2" />
+                          <div className="row">
+                            {licaoAtual.letraCompleta.map((bloco, index) => (
+                              <div key={index} className="col-md-6 mb-2">
+                                <span className="badge bg-success mb-1" style={{ fontSize: '10px' }}>
+                                  {bloco.estrofe === "Refrão" ? "Refrão" : `Estrofe ${bloco.estrofe}`}
+                                </span>
+                                <div className="ps-2 border-start border-3 border-success">
+                                  {bloco.linhas.map((linha, lIndex) => (
+                                    <p key={lIndex} className="mb-1 text-dark small" style={{ fontSize: '13px' }}>
+                                      {linha}
+                                    </p>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             ) : (
               <div className="alert alert-secondary mt-3 small">
@@ -304,7 +339,7 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
 
       </div>
 
-      {/* CONTROLES E MIXER AGORA RENDERIZADOS GLOBALMENTE NO RODAPÉ */}
+      {/* CONTROLES E MIXER */}
       <ControlesTreino 
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
