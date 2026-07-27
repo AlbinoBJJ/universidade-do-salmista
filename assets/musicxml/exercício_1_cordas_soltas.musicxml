@@ -98,7 +98,7 @@
             <left-margin>50</left-margin>
             <right-margin>0</right-margin>
             </system-margins>
-          <top-system-distance>194.2</top-system-distance>
+          <top-system-distance>170</top-system-distance>
           </system-layout>
         </print>
       <attributes>
@@ -115,16 +115,9 @@
           <line>2</line>
           </clef>
         </attributes>
-      <direction placement="above" system="only-top">
+      <direction placement="above">
         <direction-type>
-          <words relative-x="-4.2" relative-y="59.21">Deslize o dedo polegar (p) nas cordas do violão, da 6ª corda até a 1ª corda</words>
-          </direction-type>
-        </direction>
-      <direction placement="below">
-        <direction-type>
-          <words default-y="-40" relative-x="-22.4" relative-y="-109.62">mi
-</words>
-          <words>(grave)</words>
+          <words relative-y="10">mi (grave)</words>
           </direction-type>
         </direction>
       <note default-x="79.27" default-y="-75">
@@ -135,18 +128,12 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-x="-0.2" relative-y="-16.39">6</string>
-            <pluck default-x="7.46" relative-x="-1.8" relative-y="-41.97">p</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="2" width="152.02">
-      <direction placement="below">
+      <direction placement="above">
         <direction-type>
-          <words default-y="-40" relative-x="1.69" relative-y="-95.96">lá</words>
+          <words relative-y="10">lá</words>
           </direction-type>
         </direction>
       <note default-x="12.5" default-y="-60">
@@ -157,18 +144,12 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-17.19">5</string>
-            <pluck default-x="7.46" relative-x="1.4" relative-y="-41.57">p</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="3" width="152.02">
-      <direction placement="below">
+      <direction placement="above">
         <direction-type>
-          <words default-y="-40" relative-x="2.8" relative-y="-78.02">ré</words>
+          <words relative-y="10">ré</words>
           </direction-type>
         </direction>
       <note default-x="12.5" default-y="-45">
@@ -179,18 +160,12 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-17.32">4</string>
-            <pluck default-x="7.46" relative-y="-39.77">p</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="4" width="152.02">
-      <direction placement="below">
+      <direction placement="above">
         <direction-type>
-          <words default-y="-40" relative-y="-59.1">sol</words>
+          <words relative-y="10">sol</words>
           </direction-type>
         </direction>
       <note default-x="12.5" default-y="-30">
@@ -201,18 +176,12 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-18.19">3</string>
-            <pluck default-x="7.46" relative-y="-40.77">p</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="5" width="152.02">
-      <direction placement="below">
+      <direction placement="above">
         <direction-type>
-          <words default-y="-40" relative-x="2.8" relative-y="-50.81">si</words>
+          <words relative-y="10">si</words>
           </direction-type>
         </direction>
       <note default-x="12.5" default-y="-20">
@@ -223,20 +192,12 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-19.32">2</string>
-            <pluck default-x="7.46" relative-y="-42.37">p</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="6" width="152.02">
-      <direction placement="below">
+      <direction placement="above">
         <direction-type>
-          <words default-y="-40" relative-x="-23.8" relative-y="-37.6">mi
-</words>
-          <words>(aguda)</words>
+          <words relative-y="10">mi</words>
           </direction-type>
         </direction>
       <note default-x="12.5" default-y="-5">
@@ -247,12 +208,6 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-19.87">1</string>
-            <pluck default-x="7.46" relative-y="-44.32">p</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="1" width="198.82">
@@ -262,17 +217,12 @@
             <left-margin>50</left-margin>
             <right-margin>0</right-margin>
             </system-margins>
-          <system-distance>320</system-distance>
+          <system-distance>235</system-distance>
           </system-layout>
         </print>
       <attributes>
         <divisions>2</divisions>
         </attributes>
-      <direction placement="above" system="only-top">
-        <direction-type>
-          <words relative-x="1.4" relative-y="50.8">Deslize o dedo indicador (i) nas cordas do violão, da 1ª corda até a 6ª corda</words>
-          </direction-type>
-        </direction>
       <note default-x="57.14" default-y="-5">
         <pitch>
           <step>E</step>
@@ -281,12 +231,6 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-19.68">1</string>
-            <pluck default-x="7.46" relative-y="-49.5">i</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="2" width="154.18">
@@ -298,12 +242,6 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-19.92">2</string>
-            <pluck default-x="7.46" relative-y="-41.94">i</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="3" width="154.18">
@@ -315,12 +253,6 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-24.8">3</string>
-            <pluck default-x="7.46" relative-y="-45.95">i</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="4" width="154.18">
@@ -332,12 +264,6 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-25.33">4</string>
-            <pluck default-x="7.46" relative-y="-47.75">i</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="5" width="154.18">
@@ -349,12 +275,6 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-y="-20.01">5</string>
-            <pluck default-x="7.46" relative-y="-45.35">i</pluck>
-            </technical>
-          </notations>
         </note>
       </measure>
     <measure number="6" width="163.38">
@@ -366,12 +286,6 @@
         <duration>8</duration>
         <voice>1</voice>
         <type>whole</type>
-        <notations>
-          <technical>
-            <string default-x="7.46" relative-x="-0.4" relative-y="-19.01">6</string>
-            <pluck default-x="7.46" relative-x="1.4" relative-y="-42.95">i</pluck>
-            </technical>
-          </notations>
         </note>
       <barline location="right">
         <bar-style>light-heavy</bar-style>
