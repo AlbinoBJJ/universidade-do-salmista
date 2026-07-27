@@ -5,7 +5,7 @@ import Biblioteca from './pages/Biblioteca';
 
 export default function App() {
   const [paginaAtiva, setPaginaAtiva] = useState('home');
-  const [licaoSelecionadaId, setLicaoSelecionadaId] = useState('licao0001');
+  const [licaoSelecionadaId, setLicaoSelecionadaId] = useState('introducao');
 
   return (
     <div>

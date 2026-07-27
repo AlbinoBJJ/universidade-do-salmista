@@ -25,15 +25,9 @@ export default function Home({ setPaginaAtiva, setLicaoSelecionadaId }) {
           <div className="d-flex justify-content-center gap-3 flex-wrap">
             <button 
               className="btn btn-light btn-lg text-success fw-bold px-4 shadow-sm"
-              onClick={() => irParaLicao('licao0000')} // Redireciona para a Introdução
+              onClick={() => irParaLicao('introducao')}
             >
               <i className="bi bi-play-circle-fill me-2"></i> Começar Agora
-            </button>
-            <button 
-              className="btn btn-outline-light btn-lg fw-bold px-4 shadow-sm"
-              onClick={() => irParaLicao('licao0001')} // Redireciona para a última lição (Pelos Prados)
-            >
-              <i className="bi bi-music-note-list me-2"></i> Ir para a Biblioteca
             </button>
           </div>
         </div>

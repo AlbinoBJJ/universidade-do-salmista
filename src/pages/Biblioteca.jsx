@@ -5,6 +5,7 @@ import { useAudioEngine } from '../hooks/useAudioEngine';
 import { useSoundfontEngine } from '../hooks/useSoundfontEngine';
 import { useScoreParser } from '../hooks/useScoreParser';
 import { listaLicoes } from '../data/licoes';
+import introducao from '../data/licoes/introducao';
 
 const extrairTodasLicoes = (estrutura) => {
   let resultado = [];
@@ -22,8 +23,8 @@ const extrairTodasLicoes = (estrutura) => {
 
 const todasAsLicoes = extrairTodasLicoes(listaLicoes);
 
-export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
-  const licaoEncontrada = todasAsLicoes.find(l => l.id === licaoInicialId) || todasAsLicoes[1];
+export default function Biblioteca({ licaoInicialId }) {
+  const licaoEncontrada = todasAsLicoes.find(l => l.id === licaoInicialId) || introducao;
   const [licaoAtual, setLicaoAtual] = useState(licaoEncontrada);
   const [isPlaying, setIsPlaying] = useState(false);
   const [bpm, setBpm] = useState(licaoAtual?.bpm || 80);
@@ -47,7 +48,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
   const [faseCountIn, setFaseCountIn] = useState(false);
   const [sidebarAberta, setSidebarAberta] = useState(false);
 
-  // Estado para controlar quais subgrupos estão expandidos. Todos começam como `false` (recolhidos por padrão).
   const [gruposAbertos, setGruposAbertos] = useState({
     modulo_teoria: false,
     modulo_harmonia: false,
@@ -73,7 +73,7 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
   const soundfontAudio = useSoundfontEngine({ bpm, instrumento });
   const audioEngine = usarSoundfont ? soundfontAudio : syntheticAudio;
 
-  const { compassos: compassosMapeados, setCompassosMapeados } = useScoreParser(licaoAtual?.arquivoXml);
+  const { compassos: compassosMapeados } = useScoreParser(licaoAtual?.arquivoXml);
 
   useEffect(() => {
     const compassoAtualObj = compassosMapeados.find(c => c.numero === compassoAtual) || compassosMapeados[0];
@@ -382,8 +382,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                         compassoAtual={compassoAtual}
                         setCompassoAtual={setCompassoAtual}
                         compassosMapeados={compassosMapeados}
-                        setCompassosMapeados={setCompassosMapeados}
-                        setBeatsPorCompassoDinamico={setBeatsPorCompassoDinamico}
                         audioEngine={audioEngine}
                         usarLooper={usarLooper}
                         compassoInicial={compassoInicial}
