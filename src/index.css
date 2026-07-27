@@ -52,6 +52,7 @@
 
 body {
   margin: 0;
+  padding-bottom: 130px; /* Garante espaço universal no fim do body para o player fixo */
 }
 
 #root {
@@ -60,7 +61,7 @@ body {
   margin: 0;
   text-align: center;
   border-inline: none;
-  min-height: 100svh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

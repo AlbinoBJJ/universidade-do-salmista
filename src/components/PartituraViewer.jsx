@@ -224,15 +224,6 @@ export default function PartituraViewer({
   return (
     <div className="card p-3 shadow-sm bg-white border-0 my-3">
       <div className="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-2 border-bottom gap-2">
-        <div className="d-flex align-items-center gap-2">
-          <span className="small text-muted fw-semibold">
-            <i className="bi bi-file-earmark-music me-1 text-success"></i> Compasso Atual: <strong className="text-success">{compassoAtual}</strong> (BPM: <strong>{bpm}</strong>)
-          </span>
-          <span className="badge bg-light text-success border ms-2" style={{ fontSize: '11px' }}>
-            Use o seletor de compassos acima para começar a tocar a partitura em um compasso específico.
-          </span>
-        </div>
-
         <div className="btn-group btn-group-sm" role="group">
           <button type="button" className="btn btn-outline-success" onClick={() => handleZoomChange(zoom - 0.15)}>-</button>
           <button type="button" className="btn btn-outline-success disabled text-dark fw-bold">{Math.round(zoom * 100)}%</button>

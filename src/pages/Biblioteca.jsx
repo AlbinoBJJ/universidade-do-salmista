@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PartituraViewer from '../components/PartituraViewer';
 import ControlesTreino from '../components/ControlesTreino';
-import MixerAudio from '../components/MixerAudio';
 import { useAudioEngine } from '../hooks/useAudioEngine';
 import { useSoundfontEngine } from '../hooks/useSoundfontEngine';
 import { useScoreParser } from '../hooks/useScoreParser';
@@ -30,7 +29,7 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
 
   const [currentBeat, setCurrentBeat] = useState(1);
   const [faseCountIn, setFaseCountIn] = useState(false);
-  const [sidebarAberta, setSidebarAberta] = useState(false); // Fechado por padrão no mobile para melhorar UX
+  const [sidebarAberta, setSidebarAberta] = useState(false);
 
   const [beatsPorCompassoDinamico, setBeatsPorCompassoDinamico] = useState(4);
 
@@ -91,11 +90,11 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
     <div className="container-fluid p-0 m-0 overflow-hidden">
       <div className="row g-0 position-relative" style={{ minHeight: 'calc(100vh - 56px)' }}>
         
-        {/* SIDEBAR RESPONSIVA (Drawer Overlay no mobile / Coluna fixa no Desktop) */}
+        {/* SIDEBAR RESPONSIVA */}
         {sidebarAberta && (
           <div 
             className="col-8 col-md-3 col-lg-2 bg-white border-end p-0 position-absolute position-md-relative h-100 shadow-lg shadow-md-none" 
-            style={{ zIndex: 1050, top: 0, left: 0, bottom: 0 }}
+            style={{ zIndex: 1100, top: 0, left: 0, bottom: 0 }}
           >
             <div className="p-3 bg-light border-bottom fw-bold text-success d-flex justify-content-between align-items-center">
               <span>Módulos de Estudo</span>
@@ -245,43 +244,6 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
                   </div>
                 ) : (
                   <>
-                    <ControlesTreino 
-                      isPlaying={isPlaying}
-                      setIsPlaying={setIsPlaying}
-                      bpm={bpm}
-                      setBpm={setBpm}
-                      instrumento={instrumento}
-                      setInstrumento={setInstrumento}
-                      compassoAtual={compassoAtual}
-                      setCompassoAtual={setCompassoAtual}
-                      totalCompassos={compassosMapeados.length || 1}
-                      beatsPorCompasso={beatsPorCompassoDinamico}
-                      usarCountIn={usarCountIn}
-                      setUsarCountIn={setUsarCountIn}
-                      usarLooper={usarLooper}
-                      setUsarLooper={setUsarLooper}
-                      compassoInicial={compassoInicial}
-                      setCompassoInicial={setCompassoInicial}
-                      compassoFinal={compassoFinal}
-                      setCompassoFinal={setCompassoFinal}
-                      usarTimer={usarTimer}
-                      setUsarTimer={setUsarTimer}
-                      minutosInput={minutosInput}
-                      setMinutosInput={setMinutosInput}
-                      segundosInput={segundosInput}
-                      setSegundosInput={setSegundosInput}
-                      tempoRestante={tempoRestante}
-                      currentBeat={currentBeat}
-                      faseCountIn={faseCountIn}
-                    />
-
-                    <MixerAudio 
-                      {...audioEngine} 
-                      usarSoundfont={usarSoundfont} 
-                      setUsarSoundfont={setUsarSoundfont} 
-                      carregandoSom={soundfontAudio.carregandoSom} 
-                    />
-
                     <PartituraViewer 
                       arquivoXml={licaoAtual.arquivoXml}
                       isPlaying={isPlaying}
@@ -341,6 +303,41 @@ export default function Biblioteca({ licaoInicialId = 'licao0001' }) {
         </div>
 
       </div>
+
+      {/* CONTROLES E MIXER AGORA RENDERIZADOS GLOBALMENTE NO RODAPÉ */}
+      <ControlesTreino 
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        bpm={bpm}
+        setBpm={setBpm}
+        instrumento={instrumento}
+        setInstrumento={setInstrumento}
+        compassoAtual={compassoAtual}
+        setCompassoAtual={setCompassoAtual}
+        totalCompassos={compassosMapeados.length || 1}
+        beatsPorCompasso={beatsPorCompassoDinamico}
+        usarCountIn={usarCountIn}
+        setUsarCountIn={setUsarCountIn}
+        usarLooper={usarLooper}
+        setUsarLooper={setUsarLooper}
+        compassoInicial={compassoInicial}
+        setCompassoInicial={setCompassoInicial}
+        compassoFinal={compassoFinal}
+        setCompassoFinal={setCompassoFinal}
+        usarTimer={usarTimer}
+        setUsarTimer={setUsarTimer}
+        minutosInput={minutosInput}
+        setMinutosInput={setMinutosInput}
+        segundosInput={segundosInput}
+        setSegundosInput={setSegundosInput}
+        tempoRestante={tempoRestante}
+        currentBeat={currentBeat}
+        faseCountIn={faseCountIn}
+        {...audioEngine}
+        usarSoundfont={usarSoundfont}
+        setUsarSoundfont={setUsarSoundfont}
+        carregandoSom={soundfontAudio.carregandoSom}
+      />
     </div>
   );
 }
